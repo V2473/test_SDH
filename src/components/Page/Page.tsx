@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import UserCard from '../UserCard/UserCard';
 import classnames from 'classnames';
 import { User } from '../../types/types';
+import React from 'react';
 
 interface Props {
   users: User[];
@@ -13,8 +14,7 @@ interface Props {
   pagesTotal: number;
 }
 
-
-function Page(props: Props) {
+function Page(props: Props): JSX.Element {
   const emptyUser = {
     name: '', surname: '', desc: '', avatar: null, id: undefined,
   }
