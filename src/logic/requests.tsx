@@ -36,7 +36,6 @@ export async function createUserRequest(user : Types.User): Promise<AxiosRespons
 }
 
 export async function editUserRequest(user : Types.User): Promise<AxiosResponse | void> {
-  console.log(user)
   return await axios({
       method: 'put',
       url: CONSTANTS.API_URL + user.id ,
