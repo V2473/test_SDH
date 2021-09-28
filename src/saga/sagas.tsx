@@ -8,14 +8,20 @@ function* requestUsersLists() {
   yield put({ type: actionTypes.UPDATE_USERS_LIST, payload: [...payload ]})
 }
 
+function* requestSingleUser(action: Types.ActionPayload<typeof actionTypes.REQUEST_SINGLE_USER, Types.User['id']>) {
+  const payload: Types.User['id'] = yield requests.getSingleUserRequest(action.payload);
+  yield put({ type: actionTypes.UPDATE_SINGLE_USER, payload: payload })
+}
+
 function* deleteUser(action: Types.ActionPayload<typeof actionTypes.DELETE_USER, Types.User['id']>) {
   yield requests.deleteUserRequest(action.payload)
   yield put({ type: actionTypes.REQUEST_USERS_LIST, })
 }
 
 function* editUser(action: Types.ActionPayload<typeof actionTypes.EDIT_USER, Types.User>) {
+  console.log(action.payload)
   yield requests.editUserRequest(action.payload)
-  yield put({ type: actionTypes.REQUEST_USERS_LIST, })
+  yield put({ type: actionTypes.REQUEST_SINGLE_USER, payload: action.payload.id })
 }
 
 function* createUser(action: Types.ActionPayload<typeof actionTypes.CREATE_USER, Types.User>) {
@@ -28,4 +34,5 @@ export default function* sagaWatcher(): Generator<ForkEffect<never>, void, unkno
   yield takeEvery(actionTypes.DELETE_USER, deleteUser)
   yield takeEvery(actionTypes.EDIT_USER, editUser)
   yield takeEvery(actionTypes.CREATE_USER, createUser)
+  yield takeEvery(actionTypes.REQUEST_SINGLE_USER, requestSingleUser)
 }

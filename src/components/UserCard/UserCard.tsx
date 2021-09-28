@@ -1,11 +1,12 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './UserCard.scss';
 import { useState, useEffect } from 'react';
-import * as actions from "../../redux/actions";
 import classnames from 'classnames';
 import { User } from '../../types/types';
-import { useAppDispatch } from '../../hooks/hooks'
 import React from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
+
 
 interface Props {
   user: User;
@@ -13,26 +14,12 @@ interface Props {
 }
 
 const UserCard = (props: Props): JSX.Element => {
+  const history = useHistory();
   const [user, setUser] = useState({ ...props.user })
-  const [editMode, setEditMode] = useState(props.edit)
-  const [isEmptyField, setIsEmptyField] = useState(true)
 
-  const dispatch =  useAppDispatch();
-  const deleteUser = () => dispatch(actions.deleteUser(user.id))
-  const editUser = () => dispatch(actions.editUser(user))
-  const createUser = () => dispatch(actions.createUser(user))
-
-  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setUser(prev => ({ ...prev, [e.target.name]: e.target.value  }))
+  const clickHandler = (): void => {
+    history.push('/contact/' + props.user.id)
   }
-
-  useEffect(() => {
-    if( !user.name || !user.surname || !user.desc ) {
-      setIsEmptyField(true)
-    } else {
-      setIsEmptyField(false)
-    }
-  }, [user])
 
   useEffect(() => {
     setUser({ ...props.user })
@@ -40,120 +27,59 @@ const UserCard = (props: Props): JSX.Element => {
 
 
   return (
-    <div className={classnames('card', "userCard")}>
-      <div className="userCard-avatar">
-        {user.avatar ? (
-          <div className="userCard-avatar-img"/>
-        ) : (
-          <div className="userCard-avatar-none" />
-        )}
-      </div>
+    <div 
+      className={classnames('card', "userCard")}
+      onClick={clickHandler}
+    >
       <div className="userCard-id">
         <span className="userCard-id-text">ID: 
           {user ? user.id : ''} 
         </span>
 
-        {user.id ? (
-          <>
-            {editMode ? (
-              <>
-                <button onClick={() => {
-                  setEditMode(false)
-                  setUser({...props.user})
-                }}
-                  className={classnames('btn', 'btn-outline-info')}
-                >CANCEL</button>
-
-                <button onClick={() => {
-                  editUser();
-                  setEditMode(false)
-                  setUser({...props.user})
-                }}
-                  className={classnames('btn', 'btn-success')}
-                  disabled={isEmptyField}
-                >SAVE</button>
-
-              <button
-                  className={classnames('btn', 'btn-danger')}
-                  onClick={deleteUser}>DEL</button>
-              </>
-            ) : (
-              <button
-                onClick={() => setEditMode(true)}
-                className={classnames('btn', 'btn-outline-warning')}
-              >EDIT</button>
-            )}
-          </>
-        ) : (
-          <>
-            <button onClick={() =>{
-            createUser();
-            setUser(prev => ({...prev, name: '', surname: '', desc: ''}))
-            }}
-            className={classnames('btn', 'btn-success')}
-            disabled={isEmptyField}
-            >CREATE USER</button>
-          </>
-        )}
       </div>
       <div className="userCard-info">
-        {editMode ? (
+        
           <form>
-          <label htmlFor="name">
-            <span className="userCard-info-name">Name: 
-          </span>
-            <input
-              type='text'
-              name='name'
-              value={user.name}
-              onChange={inputHandler}
-              className={classnames('form-control')}
-              placeholder='required field'
-            ></input>
-          </label>
-          <br />
-          <label htmlFor="surname">
-            <span className="userCard-info-surname">Surname: </span>
-            <input
-              type='text'
-              name='surname'
-              value={user.surname}
-              onChange={inputHandler}
-              className={classnames('form-control')}
-              placeholder='required field'
-            ></input>
-          </label>
-          <br />
-          <label htmlFor="desc">
-            <span className="userCard-info-desc">Desc: </span>
-            <input
-              type='text'
-              name='desc'
-              value={user.desc}
-              onChange={(e) => inputHandler(e)}
-              className={classnames('form-control')}
-              placeholder='required field'
-            ></input>   
-          </label>
-        </form>
-        ) : (
-          <form>
-          <label htmlFor="name">
-            <span className="userCard-info-name">Name: {user.name} 
+          <label htmlFor="first_name">first_name: <br />
+            <span className="userCard-info-first_name">
+              {user.first_name} 
           </span>
           </label>
           <br />
-          <label htmlFor="surname">
-            <span className="userCard-info-surname">Surname: {user.surname}  
+          <label htmlFor="last_name">last_name:  <br />
+            <span className="userCard-info-last_name">
+              {user.last_name}  
         </span>
           </label>
           <br />
-          <label htmlFor="desc">
-            <span className="userCard-info-desc">Desc: {user.desc} 
-        </span> 
+          <label htmlFor="birth_date">birth_date: <br />
+            <span className="userCard-info-birth_date">
+              {user.birth_date} 
+            </span> 
+          </label>
+          <br />
+          <label htmlFor="gender">info: <br />
+            <span className="userCard-info-gender">
+              {user.birth_date} 
+            </span> 
+          </label>
+          <br />
+          <label htmlFor="job">info: <br />
+            <span className="userCard-info-job">
+              {user.job} 
+            </span> 
+          </label>
+          <br />
+          <label htmlFor="biography">biography: <br />
+            <span className="userCard-info-biography">
+              {user.biography} 
+            </span> 
+          </label>
+          <br />
+          <label htmlFor="is_active">
+            {user.is_active ? 'active' : 'not active'} 
           </label>
         </form>
-        )}
         
       </div>
 
