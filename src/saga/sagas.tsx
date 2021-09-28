@@ -13,9 +13,9 @@ function* requestSingleUser(action: Types.ActionPayload<typeof actionTypes.REQUE
   yield put({ type: actionTypes.UPDATE_SINGLE_USER, payload: payload })
 }
 
-function* deleteUser(action: Types.ActionPayload<typeof actionTypes.DELETE_USER, Types.User['id']>) {
-  yield requests.deleteUserRequest(action.payload)
-  yield put({ type: actionTypes.REQUEST_USERS_LIST, })
+function* deleteUser(action: Types.ActionPayload<typeof actionTypes.REQUEST_SINGLE_USER, Types.User['id']>) {
+   const payload: Types.User = yield requests.deleteUserRequest(action.payload)
+  yield put({ type: actionTypes.REQUEST_SINGLE_USER, payload: payload})
 }
 
 function* editUser(action: Types.ActionPayload<typeof actionTypes.EDIT_USER, Types.User>) {

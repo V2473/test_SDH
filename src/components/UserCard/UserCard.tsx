@@ -60,7 +60,7 @@ const UserCard = (props: Props): JSX.Element => {
           <br />
           <label htmlFor="gender">info: <br />
             <span className="userCard-info-gender">
-              {user.birth_date} 
+              {user.gender} 
             </span> 
           </label>
           <br />

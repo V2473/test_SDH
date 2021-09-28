@@ -6,7 +6,7 @@ import classnames from 'classnames';
 import { useAppDispatch } from '../../hooks/hooks'
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import * as Types from '../../types/types';
 
 interface Props {
@@ -19,12 +19,14 @@ const UserPage = (props: Props): JSX.Element => {
   const [user, setUser] = useState({ ...props.user })
   const dispatch =  useAppDispatch();
 
-  const [editMode, setEditMode] = useState(false)
+  const [editMode, setEditMode] = useState(props.user.id === undefined)
   const [isEmptyField, setIsEmptyField] = useState(true)
 
   const editUser = () => dispatch(actions.editUser(user))
   const createUser = () => dispatch(actions.createUser(user))
   const deleteUser = () => dispatch(actions.deleteUser(user.id))
+  const history = useHistory();
+
 
   const inputHandler = (e: InputTypes): void => {
     if(e.target.name === 'is_active') {
@@ -34,6 +36,8 @@ const UserPage = (props: Props): JSX.Element => {
     }
     
   }
+
+  console.log('rerender')
 
   useEffect(() => {
     if(
@@ -59,7 +63,15 @@ const UserPage = (props: Props): JSX.Element => {
     <div className={classnames('card', "userPage")}>
       <div className="userCard-id">
         <span className="userCard-id-text">ID: 
-          {user ? user.id : ''} 
+          {user.id !== undefined ? user.id : (
+            <button onClick={() =>{
+              createUser()
+              history.push('/contact')
+            }}
+            className={classnames('btn', 'btn-success')}
+            disabled={isEmptyField}
+            >CREATE USER</button>
+          )} 
         </span>
 
         {user.id ? (
@@ -84,7 +96,10 @@ const UserPage = (props: Props): JSX.Element => {
 
               <button
                   className={classnames('btn', 'btn-danger')}
-                  onClick={deleteUser}>DEL</button>
+                  onClick={() => {
+                    deleteUser()
+                    history.push('/contact')
+                  }}>DEL</button>
               </>
             ) : (
               <button
@@ -95,13 +110,7 @@ const UserPage = (props: Props): JSX.Element => {
           </>
         ) : (
           <>
-            <button onClick={() =>{
-            createUser();
-            setUser(prev => ({...prev, name: '', surname: '', desc: ''}))
-            }}
-            className={classnames('btn', 'btn-success')}
-            disabled={isEmptyField}
-            >CREATE USER</button>
+            
           </>
         )}
       </div>

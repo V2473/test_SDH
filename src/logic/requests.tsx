@@ -27,7 +27,7 @@ export async function createUserRequest(user : Types.User): Promise<AxiosRespons
       is_active: user.is_active ? 'true' : 'false'
     }
   })
-  .then(res => res)
+  .then(res => res.data.id)
   .catch(err => console.log(err));
 }
 

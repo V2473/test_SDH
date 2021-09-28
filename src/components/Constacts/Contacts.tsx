@@ -9,6 +9,8 @@ import * as actions from "../../redux/actions";
 import React from 'react';
 import UserPage from '../UserPage/UserPage';
 import UserCard from '../UserCard/UserCard';
+import classnames from 'classnames';
+
 
 function Contacts(): JSX.Element {
 
@@ -26,18 +28,31 @@ function Contacts(): JSX.Element {
     setCurrentURL(+locationN.pathname.slice(9))
   })
   useEffect(() => {
-    console.log(currentUser)
     !currentUser ? 
-    dispatch(actions.requestUsersList()) : 
+    dispatch(actions.requestUsersList()) : {
+      
+    }
+
+    if (location.pathname.slice(9) === 'create') {
+      return
+    }
     dispatch(actions.requestSingleUser(currentUser))
   }, [currentURL]);
 
   return (
     <>
-      {!currentUser ? (
-        usersList.map(user => (
+      {!currentUser && location.pathname.slice(9) !== 'create'? (
+        <>
+          <button onClick={() =>{
+            history.push('/contact/create');
+          }}
+          className={classnames('btn', 'btn-success')}
+          >CREATE USER</button>
+
+          {usersList.map(user => (
           <UserCard user={user} key={user.id + user.first_name}></UserCard>
-        ))
+        ))}
+        </>
       ) : (
         <UserPage 
           user={user}

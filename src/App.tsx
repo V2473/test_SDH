@@ -11,6 +11,7 @@ function App(): JSX.Element {
       <Switch>
       <Route exact path="/contact" component={Contacts}/>
       <Route exact path="/contact/:id" component={Contacts}/>
+      <Route exact path="/contact/create" component={Contacts}/>
       <Redirect from="/" to="/contact" />
       </Switch>
     </Router>
