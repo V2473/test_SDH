@@ -35,7 +35,7 @@ const UserCard = (props: Props): JSX.Element => {
       deleteUser()
       return
     }
-        history.push('/contact/' + props.user.id)
+    history.push('/contact/' + props.user.id)
     
   }
 

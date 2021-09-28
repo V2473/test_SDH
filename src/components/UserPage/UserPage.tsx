@@ -30,15 +30,12 @@ const UserPage = (props: Props): JSX.Element => {
   const history = useHistory();
   const location = useLocation();
 
-
-
   const inputHandler = (e: InputTypes): void => {
     if(e.target.name === 'is_active') {
       setUser(prev => ({ ...prev, [e.target.name]: (e.target as HTMLInputElement).checked  }));
     } else {
       setUser(prev => ({ ...prev, [e.target.name]: e.target.value  }));
     }
-    
   }
 
   useEffect(() => {
