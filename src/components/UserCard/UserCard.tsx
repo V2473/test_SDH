@@ -3,6 +3,10 @@ import './UserCard.scss';
 import { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { User } from '../../types/types';
+import { useAppDispatch } from '../../hooks/hooks'
+import * as actions from "../../redux/actions";
+
+
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { BrowserRouter as Router, Route, Switch, useHistory } from 'react-router-dom';
@@ -13,12 +17,28 @@ interface Props {
   edit?: boolean;
 }
 
+type InputTypes = React.MouseEvent<HTMLButtonElement> | React.MouseEvent<HTMLDivElement>;
+
 const UserCard = (props: Props): JSX.Element => {
   const history = useHistory();
+  
   const [user, setUser] = useState({ ...props.user })
+  const dispatch =  useAppDispatch();
 
-  const clickHandler = (): void => {
+  const deleteUser = () => dispatch(actions.deleteUser(user.id))
+
+
+  const clickHandler = (e: InputTypes): void => {
+
+    if ((e.target as HTMLButtonElement).nodeName === "BUTTON") {
+
+      deleteUser()
+      return
+    }
+    
+    console.log(e)
     history.push('/contact/' + props.user.id)
+    
   }
 
   useEffect(() => {
@@ -35,6 +55,9 @@ const UserCard = (props: Props): JSX.Element => {
         <span className="userCard-id-text">ID: 
           {user ? user.id : ''} 
         </span>
+        <button
+          className={classnames('btn', 'btn-danger')}
+        >DELETE</button>
 
       </div>
       <div className="userCard-info">
@@ -58,27 +81,13 @@ const UserCard = (props: Props): JSX.Element => {
             </span> 
           </label>
           <br />
-          <label htmlFor="gender">info: <br />
+          <label htmlFor="gender">gender: <br />
             <span className="userCard-info-gender">
               {user.gender} 
             </span> 
           </label>
           <br />
-          <label htmlFor="job">info: <br />
-            <span className="userCard-info-job">
-              {user.job} 
-            </span> 
-          </label>
-          <br />
-          <label htmlFor="biography">biography: <br />
-            <span className="userCard-info-biography">
-              {user.biography} 
-            </span> 
-          </label>
-          <br />
-          <label htmlFor="is_active">
-            {user.is_active ? 'active' : 'not active'} 
-          </label>
+
         </form>
         
       </div>

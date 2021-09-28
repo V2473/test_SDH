@@ -15,6 +15,7 @@ function* requestSingleUser(action: Types.ActionPayload<typeof actionTypes.REQUE
 
 function* deleteUser(action: Types.ActionPayload<typeof actionTypes.REQUEST_SINGLE_USER, Types.User['id']>) {
    const payload: Types.User = yield requests.deleteUserRequest(action.payload)
+   yield put({ type: actionTypes.REQUEST_USERS_LIST, payload: payload})
   yield put({ type: actionTypes.REQUEST_SINGLE_USER, payload: payload})
 }
 

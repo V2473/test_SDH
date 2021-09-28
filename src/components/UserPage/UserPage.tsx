@@ -3,7 +3,7 @@ import './UserPage.scss';
 import { useState, useEffect } from 'react';
 import * as actions from "../../redux/actions";
 import classnames from 'classnames';
-import { useAppDispatch } from '../../hooks/hooks'
+import { useAppSelector, useAppDispatch } from '../../hooks/hooks';
 import React from 'react';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { BrowserRouter as Router, Route, Switch, useLocation, useHistory } from 'react-router-dom';
@@ -16,7 +16,9 @@ interface Props {
 type InputTypes = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLTextAreaElement>;
 
 const UserPage = (props: Props): JSX.Element => {
-  const [user, setUser] = useState({ ...props.user })
+  const stateUser = useAppSelector(state => state.singleUser)
+
+  const [user, setUser] = useState({ ...stateUser })
   const dispatch =  useAppDispatch();
 
   const [editMode, setEditMode] = useState(props.user.id === undefined)
@@ -36,8 +38,6 @@ const UserPage = (props: Props): JSX.Element => {
     }
     
   }
-
-  console.log('rerender')
 
   useEffect(() => {
     if(
@@ -194,16 +194,18 @@ const UserPage = (props: Props): JSX.Element => {
             ></textarea>   
           </label>
           <br />
-          <label htmlFor="is_active" className={classnames('form-check-label')}>
+          <label htmlFor="is_active" className={classnames('form-check-label')}
+          >
           <input
               type='checkbox'
               name='is_active'
+              id='is_active'
               checked={user.is_active}
               onChange={(e) => inputHandler(e)}
               className={classnames('form-check-input', )}
               placeholder='required field'
             ></input>   
-            <span className="userPage-info-is_active"> is_active: </span>
+            <span className="userPage-info-is_active"> is_active </span>
           </label>
         </form>
         ) : (

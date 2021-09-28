@@ -8,8 +8,12 @@ export async function getUsersRequest(): Promise<AxiosResponse | void> {
 }
 
 export async function getSingleUserRequest(id: Types.User['id']): Promise<AxiosResponse | void> {
-  return await axios.get(CONSTANTS.API_URL + id + '/').then(res  => res.data)
-  .catch(err => console.log(err));
+  if (typeof id == 'number') {
+    return await axios.get(CONSTANTS.API_URL + id + '/').then(res  => res.data)
+    .catch(err => console.log(err));
+  }
+  return
+  
 }
 
 export async function createUserRequest(user : Types.User): Promise<AxiosResponse | void> {
