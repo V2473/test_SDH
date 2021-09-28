@@ -23,8 +23,7 @@ function Contacts(): JSX.Element {
   const [currentURL, setCurrentURL] = useState(currentPage)
   const currentUser = +location.pathname.slice(9) || undefined ;
 
-  history.listen((locationN, action) => {
-    console.log(action, locationN.pathname, location.state)
+  history.listen((locationN) => {
     setCurrentURL(+locationN.pathname.slice(9))
   })
   useEffect(() => {

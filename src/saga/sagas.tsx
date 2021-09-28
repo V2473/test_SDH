@@ -20,7 +20,6 @@ function* deleteUser(action: Types.ActionPayload<typeof actionTypes.REQUEST_SING
 }
 
 function* editUser(action: Types.ActionPayload<typeof actionTypes.EDIT_USER, Types.User>) {
-  console.log(action.payload)
   yield requests.editUserRequest(action.payload)
   yield put({ type: actionTypes.REQUEST_SINGLE_USER, payload: action.payload.id })
 }
